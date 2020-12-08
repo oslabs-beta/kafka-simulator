@@ -1,0 +1,23 @@
+{
+  "name": "kafka-intro",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "kafka": "kafka-server-start /usr/local/etc/kafka/server.properties",
+    "zookeeper": "zookeeper-server-start /usr/local/etc/kafka/zookeeper.properties",
+    "dev": "nodemon server/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "kafkajs": "^1.15.0",
+    "nodemon": "^2.0.6",
+    "os-utils": "0.0.14",
+    "winston": "^3.3.3",
+    "ws": "^7.4.1"
+  }
+}
