@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "kafka": "kafka-server-start /usr/local/etc/kafka/server.properties",
     "zookeeper": "zookeeper-server-start /usr/local/etc/kafka/zookeeper.properties",
-    "dev": "nodemon server/server.js"
+    "dev": "nodemon server/server.js",
+    "new": "node ./server/kafka/kafkaInstance.js",
+    "refresh": "node ./server/kafka/refreshTopic.js"
   },
   "keywords": [],
   "author": "",
