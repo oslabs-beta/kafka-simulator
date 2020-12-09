@@ -7,10 +7,13 @@ const createConsumer = async (kafkaInstance, topic) => {
   await consumer.subscribe({ topic: topic, fromBeginning: true });
 
   await consumer.run({
-    eachMessage: async ({ topic, partition, message }) => {
+    // eachMessage: async ({ topic, partition, message }) => {
+    eachMessage: async (payload) => {
+      console.log('PAYLOAD:');
+      console.log(payload);
       // consumer.logger().error('consumer was called!');
       console.log('----------------------------------------------');
-      console.log({ value: message.value.toString() });
+      // console.log({ value: message.value.toString() });
     },
   });
 
