@@ -1,11 +1,9 @@
 const path = require('path');
 const express = require('express');
 const kafkaController = require('./controllers/kafkaController');
-const kafka = require('./kafka/kafkaInstance');
+const kafka = require('./kafka/streams/kafkaInstance');
 const osutils = require('os-utils');
 const WebSocket = require('ws');
-const createConsumer = require('./kafka/transactionConsumer');
-const { create } = require('./controllers/kafkaController');
 
 const app = express();
 
@@ -21,51 +19,53 @@ app.listen(3000, () => {
   console.log('Listening on 3000');
 });
 
-const producer = kafka.producer();
-producer.connect();
+// Websocket
 
-createConsumer(kafka, 'transactions');
+// const producer = kafka.producer();
+// producer.connect();
 
-async function sendEvent(transaction) {
-  const senderAddress = transaction.x.inputs[0].prev_out.addr;
-  console.log('sender address is', senderAddress);
-  await producer.send({
-    topic: 'transactions',
-    messages: [{ key: senderAddress, value: JSON.stringify(transaction) }],
-  });
-}
+// createConsumer(kafka, 'transactions');
 
-//const websocket = require('websocket-stream');
-// const ws = websocket('wss://ws.blockchain.info/inv');
-const ws = new WebSocket('wss://ws.blockchain.info/inv', {
-  perMessageDeflate: false,
-});
-// process.stdin.pipe(ws);
+// async function sendEvent(transaction) {
+//   const senderAddress = transaction.x.inputs[0].prev_out.addr;
+//   console.log('sender address is', senderAddress);
+//   await producer.send({
+//     topic: 'transactions',
+//     messages: [{ key: senderAddress, value: JSON.stringify(transaction) }],
+//   });
+// }
 
-ws.on('open', () => {
-  ws.send('{"op":"unconfirmed_sub"}');
-});
-ws.on('message', (data) => {
-  const transaction = JSON.parse(data);
-  // console.log(data);
-  const amount = transaction.x.inputs[0].prev_out.value / 100000000;
-  const dollars = amount * 19122;
-  // if (amount > 1) {
-  sendEvent(transaction);
-  console.log(`Amount: ${amount}`);
-  // console.log(`Dolla dolla bill: ${dollars}`);
-  // console.log(`Size: ${transaction.x.size}`);
-  // console.log(`In Addr: ${transaction.x.inputs[0].prev_out.addr}`);
-  // console.log(`Out addr: ${transaction.x.out[0].addr}`);
-  // console.log(`relayed: ${transaction.x.relayed_by}`);
-  // console.log(process.memoryUsage());
-  printStats();
-  // }
-});
+// //const websocket = require('websocket-stream');
+// // const ws = websocket('wss://ws.blockchain.info/inv');
+// const ws = new WebSocket('wss://ws.blockchain.info/inv', {
+//   perMessageDeflate: false,
+// });
+// // process.stdin.pipe(ws);
 
-function printStats() {
-  osutils.cpuUsage((v) => {
-    // console.log(`CPU usage: ${v}`);
-    // console.log(`Total memory: ${osutils.totalmem()}`);
-  });
-}
+// ws.on('open', () => {
+//   ws.send('{"op":"unconfirmed_sub"}');
+// });
+// ws.on('message', (data) => {
+//   const transaction = JSON.parse(data);
+//   // console.log(data);
+//   const amount = transaction.x.inputs[0].prev_out.value / 100000000;
+//   const dollars = amount * 19122;
+//   // if (amount > 1) {
+//   sendEvent(transaction);
+//   console.log(`Amount: ${amount}`);
+//   // console.log(`Dolla dolla bill: ${dollars}`);
+//   // console.log(`Size: ${transaction.x.size}`);
+//   // console.log(`In Addr: ${transaction.x.inputs[0].prev_out.addr}`);
+//   // console.log(`Out addr: ${transaction.x.out[0].addr}`);
+//   // console.log(`relayed: ${transaction.x.relayed_by}`);
+//   // console.log(process.memoryUsage());
+//   printStats();
+//   // }
+// });
+
+// function printStats() {
+//   osutils.cpuUsage((v) => {
+//     // console.log(`CPU usage: ${v}`);
+//     // console.log(`Total memory: ${osutils.totalmem()}`);
+//   });
+// }

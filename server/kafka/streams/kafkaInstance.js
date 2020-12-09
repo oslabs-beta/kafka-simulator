@@ -39,22 +39,8 @@ const WinstonLogCreator = (logLevel) => {
 const kafka = new Kafka({
   clientId: 'brocoin',
   brokers: ['localhost:9092'],
-  logLevel: logLevel.INFO,
+  logLevel: logLevel.DEBUG,
   logCreator: WinstonLogCreator,
 });
 
-// const producer = kafka.producer();
-// producer.connect();
-
-// // console.log(`-------------------------------`);
-// // console.log(producer);
-// // console.log(`-------------------------------`);
-
-// // function createConsumers() {
-// const userConsumer = createConsumer(kafka, 'user');
-// const listingConsumer = createConsumer(kafka, 'listing');
-// const reviewConsumer = createConsumer(kafka, 'review');
-// // }
-// //
-// // createConsumers();
 module.exports = kafka;
