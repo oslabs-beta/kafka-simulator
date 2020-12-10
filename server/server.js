@@ -1,20 +1,20 @@
 const path = require("path");
 const express = require("express");
-const kafkaController = require("./controllers/kafkaController");
+// const kafkaController = require("./controllers/kafkaController");
 const kafka = require("./kafka/streams/kafkaInstance");
-const createConsumer = require("./kafka/manual/consumer");
-const osutils = require("os-utils");
+// const createConsumer = require("./kafka/manual/consumer");
+// const osutils = require("os-utils");
 const WebSocket = require("ws");
 
 const app = express();
 
-app.use(express.json());
+// app.use(express.json());
 
-app.use("/", express.static(path.join(__dirname, "../client/")));
+// app.use("/", express.static(path.join(__dirname, "../client/")));
 
-app.use("/api/k/:action", kafkaController.create, (req, res) => {
-  return res.status(200).json(res.locals.payload);
-});
+// app.use("/api/k/:action", kafkaController.create, (req, res) => {
+//   return res.status(200).json(res.locals.payload);
+// });
 
 app.listen(3000, () => {
   console.log("Listening on 3000");
@@ -25,11 +25,11 @@ app.listen(3000, () => {
 const producer = kafka.producer();
 producer.connect();
 
-createConsumer(kafka, "transactions");
+// createConsumer(kafka, "transactions");
 
 async function sendEvent(transaction) {
   const senderAddress = transaction.x.inputs[0].prev_out.addr;
-  console.log("sender address is", senderAddress);
+  // console.log("sender address is", senderAddress);
   await producer.send({
     topic: "transactions",
     messages: [{ key: senderAddress, value: JSON.stringify(transaction) }],
@@ -53,7 +53,7 @@ ws.on("message", (data) => {
   const dollars = amount * 19122;
   // if (amount > 1) {
   sendEvent(transaction);
-  console.log(`Amount: ${amount}`);
+  // console.log(`Amount: ${amount}`);
   // console.log(`Dolla dolla bill: ${dollars}`);
   // console.log(`Size: ${transaction.x.size}`);
   // console.log(`In Addr: ${transaction.x.inputs[0].prev_out.addr}`);
