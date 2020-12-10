@@ -1,8 +1,8 @@
-const kafkaInstance = require('../kafka/manual/kafkaInstance');
-const { createNewEvent } = require('../kafka/manual/producer');
+const kafkaInstance = require("../kafka/manual/kafkaInstance");
+const { createNewEvent } = require("../kafka/manual/producer");
 
 // const kafkaInstance = kafkaInstance;
-const producer = kafkaInstance.producer();
+// const producer = kafkaInstance.producer();
 
 const loremIpsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse commodo vehicula est eu ornare. Vivamus consequat tristique pretium. Mauris convallis justo non elementum eleifend. Ut vel nulla eu tellus vehicula tristique. Donec quis nisi vel diam hendrerit venenatis ut ac tortor. Nullam aliquet dolor ut est placerat, in tincidunt nulla consectetur. Nulla facilisi. Praesent dapibus est facilisis magna posuere ullamcorper. Etiam tincidunt eget tortor sed finibus. Ut sed metus sit amet justo rutrum fermentum eu nec felis. Nulla tempor ligula vel egestas consectetur. Nulla quis ex vel ipsum condimentum congue. Maecenas nulla mauris, vestibulum sed lorem id, accumsan mollis risus. Proin sed auctor arcu. Integer vehicula quam in libero tincidunt pulvinar. Phasellus ullamcorper varius quam, pulvinar vulputate purus finibus eget.
 
@@ -20,12 +20,12 @@ kafkaController.create = async (req, res, next) => {
   console.log(req.params.action);
   const payload = {
     topic: req.params.action,
-    message: req.params.action + ' message ' + loremIpsum,
+    message: req.params.action + " message " + loremIpsum,
   };
-  if (payload.topic === 'admin') {
+  if (payload.topic === "admin") {
     const admin = kafka.admin();
     await admin.connect();
-    const topicMetadata = await admin.fetchTopicMetadata({ topics: ['user'] });
+    const topicMetadata = await admin.fetchTopicMetadata({ topics: ["user"] });
     console.log(JSON.stringify(topicMetadata, null, 2));
     await admin.disconnect();
   } else {
