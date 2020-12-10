@@ -1,18 +1,18 @@
-const { Kafka, logLevel } = require('kafkajs');
-const winston = require('winston');
-const createConsumer = require('./consumer');
+const { Kafka, logLevel } = require("kafkajs");
+const winston = require("winston");
+const createConsumer = require("./consumer");
 
 const toWinstonLogLevel = (level) => {
   switch (level) {
     case logLevel.ERROR:
     case logLevel.NOTHING:
-      return 'error';
+      return "error";
     case logLevel.WARN:
-      return 'warn';
+      return "warn";
     case logLevel.INFO:
-      return 'info';
+      return "info";
     case logLevel.DEBUG:
-      return 'debug';
+      return "debug";
   }
 };
 
@@ -21,7 +21,7 @@ const WinstonLogCreator = (logLevel) => {
     level: toWinstonLogLevel(logLevel),
     transports: [
       new winston.transports.Console(),
-      new winston.transports.File({ filename: 'myapp.log' }),
+      new winston.transports.File({ filename: "myapp.log" }),
     ],
   });
 
@@ -36,14 +36,14 @@ const WinstonLogCreator = (logLevel) => {
 };
 
 const kafkaInstance = new Kafka({
-  clientId: 'brocoin',
-  brokers: ['localhost:9092'],
+  clientId: "brocoin",
+  brokers: ["localhost:9092"],
   logLevel: logLevel.DEBUG,
   logCreator: WinstonLogCreator,
 });
 
 // function createConsumers() {
-const userConsumer = createConsumer(kafkaInstance, 'user');
+// const userConsumer = createConsumer(kafkaInstance, 'user');
 // const listingConsumer = createConsumer(kafkaInstance, 'listing');
 // const reviewConsumer = createConsumer(kafkaInstance, 'review');
 // }
