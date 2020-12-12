@@ -6,7 +6,7 @@ const KafkaMirror = require('../../km/index');
 // });
 
 const kafka = KafkaMirror({
-  clientId: 'brocoin',
+  clientId: 'yelp',
   brokers: ['localhost:9092'],
 });
 

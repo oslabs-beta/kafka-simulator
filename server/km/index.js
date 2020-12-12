@@ -1,4 +1,5 @@
 const { Kafka, logLevel } = require('kafkajs');
+const { DefaultDeserializer } = require('v8');
 const winston = require('winston');
 const app = require('express')();
 const http = require('http').createServer(app);
@@ -39,6 +40,8 @@ const KafkaMirror = (props, port = 3030) => {
   };
 
   const WinstonLogCreator = (logLevel) => {
+    // including size in the closure to be used by logger.stream, stores size from request produce
+    let size;
     const logger = winston.createLogger({
       level: toWinstonLogLevel(logLevel),
       transports: [
@@ -49,8 +52,14 @@ const KafkaMirror = (props, port = 3030) => {
 
     logger.stream({ start: -1 }).on('log', function (log) {
       if (socket) {
+        if (log.message.indexOf('Request Produce') > -1) {
+          size = log.extra.size;
+          // socket.emit('log', JSON.stringify(data, null, 2));
+        }
+
         if (log.message.indexOf('Response Produce') > -1) {
           const data = transformLogData(log);
+          data.requestSize = size;
           socket.emit('log', JSON.stringify(data, null, 2));
         }
       }
