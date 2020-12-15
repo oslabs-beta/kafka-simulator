@@ -16,7 +16,6 @@
     "express": "^4.17.1",
     "kafkajs": "^1.15.0",
     "nodemon": "^2.0.6",
-    "os-utils": "0.0.14",
     "socket.io": "^3.0.4",
     "winston": "^3.3.3",
     "ws": "^7.4.1"

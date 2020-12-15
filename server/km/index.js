@@ -1,6 +1,7 @@
 const { Kafka, logLevel } = require('kafkajs');
-const { DefaultDeserializer } = require('v8');
 const winston = require('winston');
+const { transformLogData } = require('./utilities');
+
 const app = require('express')();
 const http = require('http').createServer(app);
 // const io = require('socket.io')(http);
@@ -87,7 +88,7 @@ const KafkaMirror = (props, port = 3030) => {
 
   const kafka = new Kafka({
     ...props,
-    logLevel: logLevel.DEBUG,
+    logLevel: logLevel.ERROR,
     logCreator: WinstonLogCreator,
   });
 
