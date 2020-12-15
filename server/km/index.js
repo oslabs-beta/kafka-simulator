@@ -3,7 +3,15 @@ const { DefaultDeserializer } = require('v8');
 const winston = require('winston');
 const app = require('express')();
 const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+// const io = require('socket.io')(http);
+
+const io = require("socket.io")(http, {
+  cors: {
+    origin: "http://localhost:8080",
+    methods: ["GET", "POST"]
+  }
+});
+
 const { transformLogData } = require('./utilities');
 
 const KafkaMirror = (props, port = 3030) => {
@@ -51,18 +59,20 @@ const KafkaMirror = (props, port = 3030) => {
     });
 
     logger.stream({ start: -1 }).on('log', function (log) {
-      if (socket) {
+     // if (socket) {
         if (log.message.indexOf('Request Produce') > -1) {
           size = log.extra.size;
+          // console.log(log)
           // socket.emit('log', JSON.stringify(data, null, 2));
         }
 
         if (log.message.indexOf('Response Produce') > -1) {
           const data = transformLogData(log);
+          console.log(size)
           data.requestSize = size;
-          socket.emit('log', JSON.stringify(data, null, 2));
+          io.sockets.emit('log', JSON.stringify(data,null,2));
         }
-      }
+      //}
     });
 
     return ({ namespace, level, label, log }) => {

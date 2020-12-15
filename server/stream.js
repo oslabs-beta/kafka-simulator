@@ -43,14 +43,14 @@ const runStream = function () {
     const review = JSON.parse(line);
     totalCount++;
     if (review.text.match(regex)) {
-      console.log(JSON.stringify(review, null, 2));
+      // console.log(JSON.stringify(review, null, 2));
       lineCount++;
-      console.log(regex);
+      // console.log(regex);
       // console.log(string);
       sendEvent(review, searchTerm);
 
-      console.log(lineCount);
-      console.log(lineCount / totalCount);
+      // console.log(lineCount);
+      // console.log(lineCount / totalCount);
     }
   });
 
