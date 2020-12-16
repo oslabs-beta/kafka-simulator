@@ -4,6 +4,9 @@ const stream = require('stream');
 const path = require('path');
 const kafka = require('./kafka/streams/kafkaInstance');
 
+const producer = kafka.producer();
+producer.connect();
+
 async function sendEvent(data, topic) {
   await producer.send({
     topic,
@@ -39,8 +42,5 @@ const runStream = function () {
     }
   });
 };
-
-const producer = kafka.producer();
-producer.connect();
 
 module.exports = runStream;
