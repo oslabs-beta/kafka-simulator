@@ -1,19 +1,23 @@
-const fs = require('fs');
-const readline = require('readline');
-const stream = require('stream');
-const path = require('path');
-const kafka = require('./kafka/streams/kafkaInstance');
+const fs = require("fs");
+const readline = require("readline");
+const stream = require("stream");
+const path = require("path");
+const kafka = require("./kafka/streams/kafkaInstance");
+const { createProducer } = require("./kafka/manual/producer");
 
-async function sendEvent(data, topic) {
+async function sendEvent(data, topic, producer) {
   await producer.send({
     topic,
     messages: [{ value: JSON.stringify(data) }],
   });
 }
 
-const runStream = function () {
+const runStream = async function () {
+  const producer = kafka.producer();
+  await producer.connect();
+
   const instream = fs.createReadStream(
-    path.resolve(__dirname, '../../yelp/yelp_academic_dataset_review.json')
+    path.resolve(__dirname, "../../yelp/yelp_academic_dataset_review.json")
   );
   const outstream = new stream();
   const rl = readline.createInterface(instream, outstream);
@@ -21,10 +25,10 @@ const runStream = function () {
   let lineCount = 0;
   let totalCount = 0;
 
-  const searchTerm = 'burger';
+  const searchTerm = "burger";
   const regex = new RegExp(`\\s${searchTerm}\\s`);
 
-  rl.on('line', (line) => {
+  rl.on("line", (line) => {
     const review = JSON.parse(line);
     totalCount++;
     if (review.text.match(regex)) {
@@ -32,15 +36,12 @@ const runStream = function () {
       lineCount++;
       // console.log(regex);
       // console.log(string);
-      sendEvent(review, searchTerm);
+      sendEvent(review, searchTerm, producer);
 
       // console.log(lineCount);
       // console.log(lineCount / totalCount);
     }
   });
 };
-
-const producer = kafka.producer();
-producer.connect();
 
 module.exports = runStream;
