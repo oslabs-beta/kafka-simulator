@@ -1,11 +1,11 @@
 const express = require('express');
 const runStream = require('./stream');
-const createConsumer = require('./kafka/streams/transactionConsumer');
-const kafka = require('./kafka/streams/kafkaInstance');
+// const createConsumer = require('./kafka/streams/transactionConsumer');
+// const kafka = require('./kafka/streams/kafkaInstance');
 
 const app = express();
 runStream();
-createConsumer(kafka, 'burger');
+// createConsumer(kafka, 'burger');
 
 // node child process to excute a certain command
 // need to run multiple processes
