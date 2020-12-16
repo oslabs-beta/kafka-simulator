@@ -13,7 +13,10 @@ const io = require('socket.io')(http);
 //   },
 // });
 
+<<<<<<< HEAD
 // const { transformLogData } = require('./utilities');
+=======
+>>>>>>> 99c2a145cb70a97eac1e8ffc77568dfee6e07eb6
 
 const KafkaMirror = (props, port = 3030) => {
   let socket = null;
