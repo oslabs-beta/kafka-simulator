@@ -7,7 +7,7 @@ async function createNewEvent(payload, producer) {
   const { topic, message } = payload;
   console.log(`KAFKA TOPIC: ${topic}`);
   await producer.send({
-    topic: 'user',
+    topic: "user",
     messages: [{ value: message }],
   });
   await producer.disconnect();
