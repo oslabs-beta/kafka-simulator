@@ -3,18 +3,19 @@ const readline = require('readline');
 const stream = require('stream');
 const path = require('path');
 const kafka = require('./kafka/streams/kafkaInstance');
+const { createProducer } = require('./kafka/manual/producer');
 
-const producer = kafka.producer();
-producer.connect();
-
-async function sendEvent(data, topic) {
+async function sendEvent(data, topic, producer) {
   await producer.send({
     topic,
     messages: [{ value: JSON.stringify(data) }],
   });
 }
 
-const runStream = function () {
+const runStream = async function () {
+  const producer = kafka.producer();
+  await producer.connect();
+
   const instream = fs.createReadStream(
     path.resolve(__dirname, '../../yelp/yelp_academic_dataset_review.json')
   );
@@ -35,7 +36,7 @@ const runStream = function () {
       lineCount++;
       // console.log(regex);
       // console.log(string);
-      sendEvent(review, searchTerm);
+      sendEvent(review, searchTerm, producer);
 
       // console.log(lineCount);
       // console.log(lineCount / totalCount);
