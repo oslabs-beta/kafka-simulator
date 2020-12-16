@@ -1,4 +1,4 @@
-const kafka = require("./kafkaInstance");
+const kafka = require('./kafkaInstance');
 
 const createConsumer = async (kafkaInstance, topic) => {
   const consumer = kafkaInstance.consumer({
@@ -37,7 +37,7 @@ const createConsumer = async (kafkaInstance, topic) => {
       //     },
       //   ],
       // });
-      console.log({ value: message.value.toString(), partition, topic });
+      // console.log({ value: message.value.toString(), partition, topic });
     },
   });
 

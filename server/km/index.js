@@ -60,6 +60,7 @@ const KafkaMirror = (props, port = 3030) => {
         if (log.message.indexOf('Response Produce') > -1) {
           const data = transformLogData(log);
           data.requestSize = size;
+          console.log('data includes', data);
           socket.emit('log', JSON.stringify(data, null, 2));
         }
       }
@@ -77,7 +78,7 @@ const KafkaMirror = (props, port = 3030) => {
 
   const kafka = new Kafka({
     ...props,
-    logLevel: logLevel.ERROR,
+    logLevel: logLevel.DEBUG,
     logCreator: WinstonLogCreator,
   });
 
