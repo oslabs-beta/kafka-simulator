@@ -70,7 +70,7 @@ const KafkaMirror = (props, port = 3030) => {
         const data = transformLogData(log);
         // console.log(size);
         data.requestSize = size;
-        console.log(data.requestSize);
+        // console.log(data.requestSize);
         io.sockets.emit("log", JSON.stringify(data, null, 2));
       }
       // }
