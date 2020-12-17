@@ -46,9 +46,25 @@ const KafkaMirror = (props, port = 3030) => {
     }
   };
 
+  let chunk = [];
+  setInterval(() => {
+    io.sockets.emit('log', JSON.stringify(chunk));
+    console.log('chunk length is', chunk.length);
+    chunk = [];
+  }, 1000);
+
   const WinstonLogCreator = (logLevel) => {
+    // let chunk = [];
+    // setInterval(() => {
+    //   io.sockets.emit('log', JSON.stringify(chunk));
+    //   console.log(chunk.length);
+    //   chunk = [];
+    // }, 1000);
+
     // including size in the closure to be used by logger.stream, stores size from request produce
     let size;
+    let newID;
+    let lastSentID;
     const logger = winston.createLogger({
       level: toWinstonLogLevel(logLevel),
       transports: [
@@ -61,8 +77,9 @@ const KafkaMirror = (props, port = 3030) => {
       // if (socket) {
       if (log.message.indexOf('Request Produce') > -1) {
         size = log.extra.size;
-        // console.log(size);
-        // console.log(log)
+        newID = log.extra.correlationId;
+        // console.log('new ID is', newID);
+        // console.log(JSON.stringify(log, null, 2));
         // socket.emit('log', JSON.stringify(data, null, 2));
       }
 
@@ -70,8 +87,15 @@ const KafkaMirror = (props, port = 3030) => {
         const data = transformLogData(log);
         // console.log(size);
         data.requestSize = size;
-        // console.log(data.requestSize);
-        io.sockets.emit('log', JSON.stringify(data, null, 2));
+        if (lastSentID !== newID) {
+          // console.log(data.requestSize);
+
+          chunk.push(data);
+          // console.log(chunk);
+          // io.sockets.emit('log', JSON.stringify(data, null, 2));
+          lastSentID = newID;
+        }
+        // io.sockets.emit('log', JSON.stringify(data, null, 2));
       }
       // }
     });
