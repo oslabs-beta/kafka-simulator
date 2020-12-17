@@ -26,7 +26,7 @@ const runStream = async function () {
   let lineCount = 0;
   let totalCount = 0;
 
-  const searchTerm = 'ass';
+  const searchTerm = 'pancake';
   const regex = new RegExp(`\\s${searchTerm}\\s`);
 
   rl.on('line', (line) => {
