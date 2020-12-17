@@ -6,6 +6,7 @@ const kafka = require('./kafka/streams/kafkaInstance');
 const { createProducer } = require('./kafka/manual/producer');
 
 async function sendEvent(data, topic, producer) {
+  // console.log('-------EVENT SENT---------');
   await producer.send({
     topic,
     messages: [{ value: JSON.stringify(data) }],
@@ -25,13 +26,15 @@ const runStream = async function () {
   let lineCount = 0;
   let totalCount = 0;
 
-  const searchTerm = 'paella';
+  const searchTerm = 'ass';
   const regex = new RegExp(`\\s${searchTerm}\\s`);
 
   rl.on('line', (line) => {
     const review = JSON.parse(line);
     totalCount++;
+    // console.log(review.text.match(regex));
     if (review.text.match(regex)) {
+      // console.log(review.text);
       // console.log(JSON.stringify(review, null, 2));
       lineCount++;
       // console.log(regex);
