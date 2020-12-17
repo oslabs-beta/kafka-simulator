@@ -1,9 +1,9 @@
-const fs = require("fs");
-const readline = require("readline");
-const stream = require("stream");
-const path = require("path");
-const kafka = require("./kafka/streams/kafkaInstance");
-const { createProducer } = require("./kafka/manual/producer");
+const fs = require('fs');
+const readline = require('readline');
+const stream = require('stream');
+const path = require('path');
+const kafka = require('./kafka/streams/kafkaInstance');
+const { createProducer } = require('./kafka/manual/producer');
 
 async function sendEvent(data, topic, producer) {
   await producer.send({
@@ -17,7 +17,7 @@ const runStream = async function () {
   await producer.connect();
 
   const instream = fs.createReadStream(
-    path.resolve(__dirname, "../../yelp/yelp_academic_dataset_review.json")
+    path.resolve(__dirname, '../../yelp/yelp_academic_dataset_review.json')
   );
   const outstream = new stream();
   const rl = readline.createInterface(instream, outstream);
@@ -25,10 +25,10 @@ const runStream = async function () {
   let lineCount = 0;
   let totalCount = 0;
 
-  const searchTerm = "burger";
+  const searchTerm = 'paella';
   const regex = new RegExp(`\\s${searchTerm}\\s`);
 
-  rl.on("line", (line) => {
+  rl.on('line', (line) => {
     const review = JSON.parse(line);
     totalCount++;
     if (review.text.match(regex)) {
