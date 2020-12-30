@@ -22,3 +22,4 @@ runStream();
 app.listen(3001, () => {
   console.log('Listening on 3001');
 });
+let str='hi'
