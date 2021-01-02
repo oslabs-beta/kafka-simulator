@@ -1,7 +1,5 @@
-// const kafka = require("./kafkaInstance");
-
-const createConsumer = async (kafkaInstance, topic) => {
-  const consumer = kafkaInstance.consumer({
+const createConsumer = async (kafkaConnection, topic) => {
+  const consumer = kafkaConnection.consumer({
     groupId: topic,
   });
   await consumer.connect();

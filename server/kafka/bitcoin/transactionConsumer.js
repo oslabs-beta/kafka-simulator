@@ -1,5 +1,5 @@
-const createConsumer = async (kafkaInstance, topic) => {
-  const consumer = kafkaInstance.consumer({
+const createConsumer = async (kafkaConnection, topic) => {
+  const consumer = kafkaConnection.consumer({
     // groupId: 'airbnb',
     groupId: topic,
   });

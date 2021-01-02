@@ -2,10 +2,9 @@ const express = require('express');
 const runStream = require('./stream');
 const WebSocket = require('ws');
 const fs = require('fs');
-// const kafka = require('./kafka/streams/kafkaInstance');
-const kafka = require('./kafka/manual/kafkaInstance');
+const kafka = require('./kafka/kafkaConnection');
 // const createConsumer = require('./kafka/streams/transactionConsumer');
-const createConsumer = require('./kafka/manual/consumer');
+const createConsumer = require('./kafka/bitcoin/transactionConsumer');
 // const path = './myapp.log';
 
 // const connectProducer = async () => {
