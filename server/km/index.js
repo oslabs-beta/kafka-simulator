@@ -49,7 +49,7 @@ const KafkaMirror = (props, port = 3030) => {
   let chunk = [];
   setInterval(() => {
     io.sockets.emit('log', JSON.stringify(chunk));
-    // console.log('chunk length is', chunk.length);
+    console.log('chunk length is', chunk.length);
     chunk = [];
   }, 1000);
 
