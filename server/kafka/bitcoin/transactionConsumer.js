@@ -3,42 +3,34 @@ const createConsumer = async (kafkaConnection, topic) => {
     groupId: topic,
   });
   await consumer.connect();
-  await consumer.subscribe({ topic, fromBeginning: true });
+  await consumer.subscribe({ topic, fromBeginning: false });
 
   const producer = await kafkaConnection.producer();
   await producer.connect();
 
   await consumer.run({
-    // eachMessage: async (payload) => {
+    eachMessage: async (payload) => {
+      // Kafka stores message from the producer in base64
+      const utf8encoded = Buffer.from(payload.message.value, 'base64').toString(
+        'utf8'
+      );
 
-    // console.log(payload);
-    eachMessage: async ({ topic, partition, message }) => {
-      // console.log(message);
-      // console.log(message.value);
-      // console.log(JSON.parse(message.value));
-      // const data = JSON.parse(message.value);
-      // const data = JSON.parse(message);
-      // console.log(data);
-      // console.log(data.x.inputs[0].prev_out.value);
-      // console.log(data.x.inputs[0].prev_out.value / 100000000);
-      // const amount = data.x.inputs[0].prev_out.value / 100000000;
-      // console.log(amount);
-      // const dollars = amount * 19122;
-      console.log('******Calculated Transaction consumer was called!*****');
+      const transaction = JSON.parse(utf8encoded);
 
       consumer.logger().error('consumer was called!');
       const newTransaction = {
-        address: data.x.inputs[0].prev_out.addr,
-        bitcoin: amount,
-        dollars,
+        address: transaction.x.inputs[0].prev_out.addr,
+        bitcoin: transaction.amount,
+        dollars: transaction.dollars,
       };
+
       const calculatePartition = () => {
-        if (dollars < 1000) return 0;
-        if (dollars < 10000) return 1;
+        if (transaction.dollars < 1000) return 0;
+        if (transaction.dollars < 10000) return 1;
         return 2;
       };
       const x = calculatePartition();
-      console.log('x is ', x);
+
       producer.send({
         topic: 'calculatedTransactions',
         messages: [
@@ -48,11 +40,9 @@ const createConsumer = async (kafkaConnection, topic) => {
           },
         ],
       });
-      console.log({ value: message.value.toString(), partition, topic });
     },
   });
 
-  console.log(consumer);
   return consumer;
 };
 

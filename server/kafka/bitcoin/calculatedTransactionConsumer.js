@@ -1,26 +1,28 @@
 const createConsumer = async (kafkaConnection, topic) => {
   const consumer = kafkaConnection.consumer({
-    // groupId: 'airbnb',
     groupId: topic,
   });
   await consumer.connect();
-  await consumer.subscribe({ topic: topic, fromBeginning: true });
+  await consumer.subscribe({ topic: topic, fromBeginning: false });
 
   await consumer.run({
-    // eachMessage: async ({ topic, partition, message }) => {
     eachMessage: async (payload) => {
-      // console.log('PAYLOAD:');
-      // console.log(payload);
-      console.log('Transaction consumer was called!');
+      // Kafka stores message from the producer in base64
+      const utf8encoded = Buffer.from(payload.message.value, 'base64').toString(
+        'utf8'
+      );
+
+      const transaction = JSON.parse(utf8encoded);
+
+      if (payload.partition === 2) {
+        console.log('inside transaction consumer', transaction);
+        console.log('******Calculated Transaction consumer was called!*****');
+      }
+
       consumer.logger().error('consumer was called!');
-      // console.log('----------------------------------------------');
-      // console.log({ value: message.value.toString() });
     },
   });
 
-  // console.log(`consumer -------------------------------`);
-  // console.log(consumer);
-  // console.log(`-------------------------------`);
   return consumer;
 };
 
