@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "kafka": "kafka-server-start /usr/local/etc/kafka/server.properties",
     "zookeeper": "zookeeper-server-start /usr/local/etc/kafka/zookeeper.properties",
-    "dev": "nodemon server/server.js"
+    "bitcoin": "stream=bitcoin nodemon server/bitcoinServer.js",
+    "yelp": "stream=yelp nodemon server/yelpServer.js"
   },
   "keywords": [],
   "author": "",

@@ -1,22 +1,22 @@
-const kafka = require("./kafkaInstance");
+const kafka = require('../kafkaConnection');
 
 const admin = kafka.admin();
 
 async function createAdminTopics() {
   await admin.connect();
   await admin.deleteTopics({
-    topics: ["transactions", "calculatedTransactions"],
+    topics: ['transactions', 'calculatedTransactions'],
   });
 
   setTimeout(async () => {
     await admin.createTopics({
       topics: [
         {
-          topic: "transactions",
+          topic: 'transactions',
           numPartitions: 3,
         },
         {
-          topic: "calculatedTransactions",
+          topic: 'calculatedTransactions',
           numPartitions: 3,
         },
       ],

@@ -2,11 +2,9 @@ const fs = require('fs');
 const readline = require('readline');
 const stream = require('stream');
 const path = require('path');
-const kafka = require('./kafka/streams/kafkaInstance');
-const { createProducer } = require('./kafka/manual/producer');
+const kafka = require('./kafka/kafkaConnection');
 
 async function sendEvent(data, topic, producer) {
-  // console.log('-------EVENT SENT---------');
   await producer.send({
     topic,
     messages: [{ value: JSON.stringify(data) }],
