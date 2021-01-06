@@ -1,0 +1,46 @@
+version: '3.0'
+
+networks:
+  kafka-net:
+    driver: bridge
+
+services:
+  spotify-kafka:
+    image: 'spotify/kafka'
+    container_name: 'spotify-kafka'
+    networks:
+      - kafka-net
+    ports:
+      - '2181:2181'
+      - '9092:9092'
+    environment:
+      - ADVERTISED_HOST=localhost
+      - ADVERTISED_PORT=9092
+  kafka-simulator:
+    image: 'kafka-simulator'
+    container_name: 'kafka-simulator'
+    networks:
+      - kafka-net
+    ports:
+      - '3001:3001'
+      - '3030:3030'
+    depends_on:
+      - spotify-kafka
+    # volumes:
+    # - .:/usr/src/app
+  kafka-mirror:
+    image: 'kafka-mirror'
+    container_name: 'kafka-mirror'
+    networks:
+      - kafka-net
+    ports:
+      - '3000:3000'
+      - '8080:8080'
+    # command: bash -c "cd ./usr/src/app && npm run dev"
+    # entrypoint: ['npm', 'run', 'dev']
+    depends_on:
+      - kafka-simulator
+      # - spotify-kafka
+    # volumes:
+    # - .:/usr/src/app
+# docker run -p 3000:3000 -p 8080:8080 kafka-mirror
