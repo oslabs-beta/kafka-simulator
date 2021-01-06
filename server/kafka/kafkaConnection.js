@@ -1,12 +1,13 @@
-const KafkaMirror = require('../km/index');
+const KafkaMirror = require("../km/index");
+
 let clientId;
 
-if (process.env.stream === 'bitcoin') clientId = 'brocoin';
-else clientId = 'yelp';
+if (process.env.stream === "bitcoin") clientId = "bitcoinStream";
+else clientId = "yelpStream";
 
 const kafka = KafkaMirror({
   clientId,
-  brokers: ['localhost:9092'],
+  brokers: ["localhost:9092"],
 });
 
 module.exports = kafka;
