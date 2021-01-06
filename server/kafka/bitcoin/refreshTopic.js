@@ -1,22 +1,27 @@
-const kafka = require('../kafkaConnection');
+const kafka = require("../kafkaConnection");
 
 const admin = kafka.admin();
 
-async function createAdminTopics() {
+async function refreshAdminTopics() {
   await admin.connect();
+
+  // Add any additional topics to refresh to the "topics" array pashed to deleteTopics
   await admin.deleteTopics({
-    topics: ['transactions', 'calculatedTransactions'],
+    topics: ["transactions", "calculatedTransactions"],
   });
 
+  // Deletion of the topics happens within Kafka, as opposed to within Javascript, requiring a set timeout to
+  // make sure that we are not recreating the deleted topics prior to them having been deleted with Kafka
+  // 3 partitions are standard per topic
   setTimeout(async () => {
     await admin.createTopics({
       topics: [
         {
-          topic: 'transactions',
+          topic: "transactions",
           numPartitions: 3,
         },
         {
-          topic: 'calculatedTransactions',
+          topic: "calculatedTransactions",
           numPartitions: 3,
         },
       ],
@@ -25,4 +30,4 @@ async function createAdminTopics() {
   }, 1000);
 }
 
-createAdminTopics();
+refreshAdminTopics();
