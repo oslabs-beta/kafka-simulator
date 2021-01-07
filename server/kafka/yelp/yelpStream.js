@@ -8,10 +8,10 @@ const kafka = require("../kafkaConnection");
 // CLICK OF A BUTTON SHOWN ON THE USER INTERFACE
 
 // Lower order function invoked to produce new event every time Regex keyword appears in a review
-async function sendEvent(data, topic, producer) {
+async function sendEvent(review, topic, producer) {
   await producer.send({
     topic,
-    messages: [{ value: JSON.stringify(data) }],
+    messages: [{ value: JSON.stringify(review) }],
   });
 }
 
@@ -30,8 +30,7 @@ const runStream = async function () {
       "../../../../yelp/yelp_academic_dataset_review.json"
     )
   );
-  const outstream = new stream();
-  const rl = readline.createInterface(instream, outstream);
+  const rl = readline.createInterface(instream);
 
   // Update 'searchTerm' to filter reviews based on different key words or phrases
   // IF A FRONTEND FOR SIMULATOR IS CREATED AND WE WANT TO CHANGE THE SEARCH TERM DYNAMICALLY, WE RECOMMEND
