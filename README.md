@@ -16,11 +16,11 @@ There are many moving parts with a Kafka cluster, which creates high barriers of
 
 Getting started is as easy as 1, 2, 3...
 
-1. Download this repository
+1. Download and `cd` into the repository
 
 2. Run `npm run simulate`
 
-3. Open another terminal and run `npm run bitcoin`
+3. In another terminal, run `npm run bitcoin`
 
 ## Overview
 
@@ -38,20 +38,39 @@ kafka-simulator uses streams and a producer to create messages that are sent to 
 
 ## Guides
 
-The following guides will walk you through starting the Bitcoin transactions, or the Yelp dataset guide.
+There are two ways to simulate Kafka traffice with kafka-simulator. The following guides will walk you through starting the Bitcoin transactions, or the Yelp dataset guide.
 
 ### Bitcoin Transactions Guide
 
-The first input uses an open-source Bitcoin transactions WebSocket.
+This method uses an open-source Bitcoin transactions WebSocket. Every time there is a Bitcoin transaction, a Kafka producer will create a message in a `transactions` topic. A consumer will then consume that data and produce another message in the `calculatedTransactions` topic.
+
+To start this simulator, run `npm run bitcoin` (Kafka and Zookeeper must be running).
 
 ### Yelp Dataset Guide
 
-This part requires a little extra work but is _very_ rewarding! With this method, you can parse a 5.2 million review Yelp dataset for reviews that include a word of your choosing. By default, the parser searches for reviews that include the word _pancake_, but you can easily change this to something a little more... intesting :)
+This part requires a little extra work but is _very_ rewarding! With this method, you can parse a 5.2 million review Yelp dataset for reviews that include a word of your choosing. By default, the parser searches for reviews that include the word _pancake_, but you can easily change this.
 
 #### Installing & Configuring the Yelp Dataset
 
-1. To download the Yelp dataset, go to https://www.kaggle.com/yelp-dataset/yelp-dataset and download the free datasets (a free kaggle account is required).
-1. Once you've downloaded the dataset, place the `reviews.json` file in...
+1. To download the Yelp dataset, go to https://www.kaggle.com/yelp-dataset/yelp-dataset and download the datasets (a free kaggle account is required).
+1. Once you've downloaded the dataset, place the `yelp_academic_dataset_review.json` file in a folder named `yelp` in the same directory as kafka-simulator.
+
+**Example**:
+
+Desktop folder
+
+- "kafka-simulator" folder
+- "yelp" folder
+
+To start this simulator, run `npm run yelp` (Kafka and Zookeeper must be running).
+
+## Verifying Kafka Traffic
+
+To see the Kafka traffic, we recommend using [KafkaMirror](https://github.com/oslabs-beta/KafkaMirror) or a desktop tool like [Kafka Tool](https://www.kafkatool.com/).
+
+## Docker
+
+@todo
 
 ## Contributors
 
