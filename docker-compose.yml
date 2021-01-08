@@ -49,3 +49,52 @@ services:
   # volumes:
   # - .:/usr/src/app
 # docker run -p 3000:3000 -p 8080:8080 kafka-mirror
+
+# version: '3.0'
+
+# # networks:
+# #   kafka-net:
+# #     driver: bridge
+# #     ipam:
+# #       driver: default
+# #       config:
+# #         - subnet: 172.16.0.0/24
+
+# services:
+#   spotify-kafka:
+#     image: 'spotify/kafka'
+#     container_name: 'spotify-kafka'
+#     ports:
+#       - '2181:2181'
+#       - '9092:9092'
+#     environment:
+#       # - ADVERTISED_HOST=172.16.0.12
+#       - ADVERTISED_HOST=localhost
+#       - ADVERTISED_PORT=9092
+# networks:
+#   kafka-net:
+#     ipv4_address: 172.16.0.12
+
+# kafka-simulator:
+#   image: 'kafkamirror/kafka-simulator'
+#   container_name: 'kafka-simulator'
+#   networks:
+#     kafka-net:
+#       ipv4_address: 172.16.0.14
+#   ports:
+#     - '3001:3001'
+#     - '3030:3030'
+#   depends_on:
+#     - spotify-kafka
+
+# kafkamirror:
+#   image: 'kafkamirror/kafkamirror'
+#   container_name: 'kafkamirror'
+#   ports:
+#     - '3000:3000'
+#     - '8080:8080'
+#   depends_on:
+#     - kafka-simulator
+#   networks:
+#     kafka-net:
+#       ipv4_address: 172.16.0.13
