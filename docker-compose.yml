@@ -1,13 +1,5 @@
 version: '3.0'
 
-# networks:
-#   kafka-net:
-#     driver: bridge
-#     ipam:
-#       driver: default
-#       config:
-#         - subnet: 172.16.0.0/24
-
 services:
   spotify-kafka:
     image: 'spotify/kafka'
@@ -16,12 +8,35 @@ services:
       - '2181:2181'
       - '9092:9092'
     environment:
-      # - ADVERTISED_HOST=172.16.0.12
       - ADVERTISED_HOST=localhost
       - ADVERTISED_PORT=9092
-  # networks:
-  #   kafka-net:
-  #     ipv4_address: 172.16.0.12
+#
+# Use the below to orchestrate Kafka, Zookeeper, kafka-simulate and KafkaMirror
+# version: '3.0'
+
+# # networks:
+# #   kafka-net:
+# #     driver: bridge
+# #     ipam:
+# #       driver: default
+# #       config:
+# #         - subnet: 172.16.0.0/24
+
+# services:
+#   spotify-kafka:
+#     image: 'spotify/kafka'
+#     container_name: 'spotify-kafka'
+#     ports:
+#       - '2181:2181'
+#       - '9092:9092'
+#     environment:
+#       # - ADVERTISED_HOST=172.16.0.12
+#       - ADVERTISED_HOST=localhost
+#       - ADVERTISED_PORT=9092
+# networks:
+#   kafka-net:
+#     ipv4_address: 172.16.0.12
+
 # kafka-simulator:
 #   image: 'kafkamirror/kafka-simulator'
 #   container_name: 'kafka-simulator'
