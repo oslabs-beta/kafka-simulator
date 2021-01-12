@@ -1,53 +1,56 @@
 version: '3.0'
 
-networks:
-  kafka-net:
-    driver: bridge
+# networks:
+#   kafka-net:
+#     driver: bridge
+#     ipam:
+#       driver: default
+#       config:
+#         - subnet: 172.16.0.0/24
 
 services:
   spotify-kafka:
-    # network_mode: host
     image: 'spotify/kafka'
     container_name: 'spotify-kafka'
-    networks:
-      - kafka-net
     ports:
       - '2181:2181'
       - '9092:9092'
     environment:
-      # - ADVERTISED_HOST=localhost
-      - ADVERTISED_HOST=0.0.0.0
+      # - ADVERTISED_HOST=172.16.0.12
+      - ADVERTISED_HOST=localhost
       - ADVERTISED_PORT=9092
-  # kafka-simulator:
-  #   image: 'kafka-simulator'
-  #   container_name: 'kafka-simulator'
-  #   networks:
-  #     - kafka-net
-  #   ports:
-  #     - '3001:3001'
-  #     - '3030:3030'
-  #   depends_on:
-  #     - spotify-kafka
-  # volumes:
-  # - .:/usr/src/app
+  # networks:
+  #   kafka-net:
+  #     ipv4_address: 172.16.0.12
+# kafka-simulator:
+#   image: 'kafkamirror/kafka-simulator'
+#   container_name: 'kafka-simulator'
+#   networks:
+#     kafka-net:
+#       ipv4_address: 172.16.0.14
+#   ports:
+#     - '3001:3001'
+#     - '3030:3030'
+#   depends_on:
+#     - spotify-kafka
 
-  # kafkamirror:
-  #   image: 'kafkamirror/kafkamirror'
-  #   container_name: 'kafkamirror'
-  #   # network_mode: host
-  #   networks:
-  #     - kafka-net
-  #   ports:
-  #     - '3000:3000'
-  #     - '8080:8080'
-  #   depends_on:
-  #     - spotify-kafka
+# kafkamirror:
+#   image: 'kafkamirror/kafkamirror'
+#   container_name: 'kafkamirror'
+#   # network_mode: host
+#   networks:
+#     - kafka-net
+#   ports:
+#     - '3000:3000'
+#     - '8080:8080'
+#   depends_on:
+#     - spotify-kafka
 
-  # command: bash -c "cd ./usr/src/app && npm run dev"
-  # entrypoint: ['npm', 'run', 'dev']
-  # - kafka-simulator
-  # volumes:
-  # - .:/usr/src/app
+# command: bash -c "cd ./usr/src/app && npm run dev"
+# entrypoint: ['npm', 'run', 'dev']
+# - kafka-simulator
+# volumes:
+# - .:/usr/src/app
 # docker run -p 3000:3000 -p 8080:8080 kafka-mirror
 
 # version: '3.0'
